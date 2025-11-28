@@ -28,4 +28,4 @@ RUN mkdir -p downloads && chmod 777 downloads
 EXPOSE 5000
 
 # Comando inicial
-CMD ["npm", "start"]
+CMD ["node", "server-landing.js"]
