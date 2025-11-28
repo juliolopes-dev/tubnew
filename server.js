@@ -59,9 +59,15 @@ app.post('/api/video-info', async (req, res) => {
         console.log(`Buscando informações para: ${url}`);
 
         // Obter informações do vídeo usando cliente Android para evitar bloqueios
-        const { stdout } = await execAsync(
-            `yt-dlp --dump-json --no-playlist --extractor-args "youtube:player_client=ios" "${url}"`
-        );
+        let command = `yt-dlp --dump-json --no-playlist "${url}"`;
+
+        // Verificar se existe arquivo de cookies
+        try {
+            await fs.access(path.join(__dirname, 'cookies.txt'));
+            command += ` --cookies "${path.join(__dirname, 'cookies.txt')}"`;
+        } catch (e) { }
+
+        const { stdout } = await execAsync(command);
 
         const videoInfo = JSON.parse(stdout);
 
@@ -124,7 +130,14 @@ app.post('/api/download', async (req, res) => {
         const outputTemplate = path.join(DOWNLOADS_DIR, '%(title)s.%(ext)s');
 
         // Comando base com cliente Android e restrição de caracteres no nome do arquivo
-        let command = `yt-dlp --no-playlist --restrict-filenames --extractor-args "youtube:player_client=ios" -o "${outputTemplate}"`;
+        // Comando base
+        let command = `yt-dlp --no-playlist --restrict-filenames -o "${outputTemplate}"`;
+
+        // Adicionar cookies se existirem
+        try {
+            await fs.access(path.join(__dirname, 'cookies.txt'));
+            command += ` --cookies "${path.join(__dirname, 'cookies.txt')}"`;
+        } catch (e) { }
 
         // Adicionar formato específico se fornecido
         if (format && format !== 'best') {
