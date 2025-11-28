@@ -60,7 +60,7 @@ app.post('/api/video-info', async (req, res) => {
 
         // Obter informações do vídeo usando cliente Android para evitar bloqueios
         const { stdout } = await execAsync(
-            `yt-dlp --dump-json --no-playlist --extractor-args "youtube:player_client=android" "${url}"`
+            `yt-dlp --dump-json --no-playlist --extractor-args "youtube:player_client=ios" "${url}"`
         );
 
         const videoInfo = JSON.parse(stdout);
@@ -124,7 +124,7 @@ app.post('/api/download', async (req, res) => {
         const outputTemplate = path.join(DOWNLOADS_DIR, '%(title)s.%(ext)s');
 
         // Comando base com cliente Android e restrição de caracteres no nome do arquivo
-        let command = `yt-dlp --no-playlist --restrict-filenames --extractor-args "youtube:player_client=android" -o "${outputTemplate}"`;
+        let command = `yt-dlp --no-playlist --restrict-filenames --extractor-args "youtube:player_client=ios" -o "${outputTemplate}"`;
 
         // Adicionar formato específico se fornecido
         if (format && format !== 'best') {
