@@ -139,12 +139,20 @@ app.post('/api/download', async (req, res) => {
             command += ` --cookies "${path.join(__dirname, 'cookies.txt')}"`;
         } catch (e) { }
 
+        // Detectar se é um Short
+        const isShort = url.includes('/shorts/');
+
         // Adicionar formato específico se fornecido
         if (format && format !== 'best') {
             command += ` -f ${format}`;
         } else {
-            // Melhor qualidade: vídeo + áudio
-            command += ` -f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best"`;
+            // Para Shorts, usar estratégia mais simples
+            if (isShort) {
+                command += ` -f "best[ext=mp4]/best"`;
+            } else {
+                // Melhor qualidade: vídeo + áudio
+                command += ` -f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best"`;
+            }
         }
 
         command += ` "${url}"`;
