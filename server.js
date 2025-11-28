@@ -59,7 +59,7 @@ app.post('/api/video-info', async (req, res) => {
         console.log(`Buscando informações para: ${url}`);
 
         // Obter informações do vídeo usando cliente Android para evitar bloqueios
-        let command = `yt-dlp --dump-json --no-playlist "${url}"`;
+        let command = `yt-dlp --dump-json --no-playlist --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" "${url}"`;
 
         // Verificar se existe arquivo de cookies
         try {
@@ -131,7 +131,7 @@ app.post('/api/download', async (req, res) => {
 
         // Comando base com cliente Android e restrição de caracteres no nome do arquivo
         // Comando base
-        let command = `yt-dlp --no-playlist --restrict-filenames -o "${outputTemplate}"`;
+        let command = `yt-dlp --no-playlist --restrict-filenames --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" -o "${outputTemplate}"`;
 
         // Adicionar cookies se existirem
         try {
