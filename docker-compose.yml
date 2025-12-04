@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  tubnew-landing:
+    build:
+      context: ./landing-page
+      dockerfile: Dockerfile
+    container_name: tubnew-landing
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      # Volume para os arquivos de download (.exe)
+      - ./landing-page/downloads:/usr/share/nginx/html/downloads
+    labels:
+      # Labels para EasyPanel (opcional)
+      - "traefik.enable=true"
+      - "traefik.http.routers.tubnew.rule=Host(`tubnew.seudominio.com`)"
+      - "traefik.http.routers.tubnew.entrypoints=websecure"
+      - "traefik.http.routers.tubnew.tls.certresolver=letsencrypt"

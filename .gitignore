@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Build output
+desktop-app/dist/
+
+# Large binary files (download separately)
+landing-page/downloads/*.exe
+desktop-app/bin/*.exe
+desktop-app/bin/*.dll
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# IDE
+.idea/
+.vscode/
+
+# Extracted folders
+desktop-app/ffmpeg-master-latest-win64-gpl-shared/

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:;">
+  <title>TubNew - Baixador de Vídeos</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Barra de título customizada -->
+  <div class="titlebar">
+    <div class="titlebar-drag">
+      <div class="titlebar-logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#e94560" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2 17L12 22L22 17" stroke="#e94560" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2 12L12 17L22 12" stroke="#e94560" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>TubNew</span>
+      </div>
+    </div>
+    <div class="titlebar-controls">
+      <button class="titlebar-btn" id="btn-minimize">
+        <svg width="12" height="12" viewBox="0 0 12 12"><rect y="5" width="12" height="2" fill="currentColor"/></svg>
+      </button>
+      <button class="titlebar-btn" id="btn-maximize">
+        <svg width="12" height="12" viewBox="0 0 12 12"><rect x="1" y="1" width="10" height="10" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+      </button>
+      <button class="titlebar-btn btn-close" id="btn-close">
+        <svg width="12" height="12" viewBox="0 0 12 12">
+          <path d="M1 1L11 11M1 11L11 1" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Conteúdo principal -->
+  <main class="container">
+    <!-- Header -->
+    <header class="header">
+      <h1>
+        <span class="gradient-text">TubNew</span>
+      </h1>
+      <p class="subtitle">Baixe vídeos do YouTube e Reels em segundos</p>
+    </header>
+
+    <!-- Input de URL -->
+    <section class="input-section">
+      <div class="input-wrapper">
+        <div class="input-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <input 
+          type="text" 
+          id="url-input" 
+          placeholder="Cole a URL do vídeo aqui..."
+          autocomplete="off"
+        >
+        <button class="btn-paste" id="btn-paste" title="Colar da área de transferência">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="8" y="2" width="8" height="4" rx="1" ry="1" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </button>
+      </div>
+      <button class="btn-primary" id="btn-search">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+          <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span>Buscar Vídeo</span>
+      </button>
+    </section>
+
+    <!-- Preview do vídeo -->
+    <section class="preview-section" id="preview-section" style="display: none;">
+      <div class="video-card">
+        <div class="video-thumbnail">
+          <img id="video-thumbnail" src="" alt="Thumbnail">
+          <div class="video-duration" id="video-duration"></div>
+        </div>
+        <div class="video-info">
+          <h3 id="video-title"></h3>
+          <p class="video-channel" id="video-channel"></p>
+          <p class="video-views" id="video-views"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Opções de download -->
+    <section class="options-section" id="options-section" style="display: none;">
+      <div class="options-grid">
+        <!-- Formato -->
+        <div class="option-group">
+          <label>Formato</label>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="format" value="video" checked>
+              <span class="radio-custom"></span>
+              <span class="radio-label">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <polygon points="5 3 19 12 5 21 5 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Vídeo (MP4)
+              </span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="format" value="mp3">
+              <span class="radio-custom"></span>
+              <span class="radio-label">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <path d="M9 18V5l12-2v13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="6" cy="18" r="3" stroke="currentColor" stroke-width="2"/>
+                  <circle cx="18" cy="16" r="3" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                Áudio (MP3)
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Qualidade -->
+        <div class="option-group" id="quality-group">
+          <label>Qualidade</label>
+          <select id="quality-select" class="select-input">
+            <option value="best">Melhor Qualidade</option>
+            <option value="1080">1080p (Full HD)</option>
+            <option value="720">720p (HD)</option>
+            <option value="480">480p (SD)</option>
+            <option value="360">360p (Baixa)</option>
+          </select>
+        </div>
+
+        <!-- Pasta de destino -->
+        <div class="option-group folder-group">
+          <label>Salvar em</label>
+          <div class="folder-input">
+            <input type="text" id="folder-path" readonly>
+            <button class="btn-folder" id="btn-folder">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botão de download -->
+      <button class="btn-download" id="btn-download">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="7 10 12 15 17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Baixar Agora</span>
+      </button>
+    </section>
+
+    <!-- Barra de progresso -->
+    <section class="progress-section" id="progress-section" style="display: none;">
+      <div class="progress-info">
+        <span id="progress-text">Baixando...</span>
+        <span id="progress-percent">0%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </section>
+
+    <!-- Mensagem de sucesso -->
+    <section class="success-section" id="success-section" style="display: none;">
+      <div class="success-icon">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="#4ade80" stroke-width="2"/>
+          <path d="M8 12l2 2 4-4" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h3>Download Concluído!</h3>
+      <button class="btn-open-folder" id="btn-open-folder">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Abrir Pasta
+      </button>
+    </section>
+  </main>
+
+  <!-- Toast de notificação -->
+  <div class="toast" id="toast">
+    <span id="toast-message"></span>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
